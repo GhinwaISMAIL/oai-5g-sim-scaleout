@@ -62,7 +62,7 @@ echo "[gNB] Docker installed."
 # ------------------------------------------------------------------ #
 echo "[gNB] Adding route to CN Docker network..."
 
-ip route add 192.168.70.128/26 via 10.10.0.10 dev $(ip route | grep 10.10.0 | awk '{print $3}') || true
+ip route add 192.168.70.128/26 via 10.10.0.10 || true
 
 # Make it persistent across reboots
 echo "192.168.70.128/26 via 10.10.0.10" >> /etc/network/interfaces.d/cn-route.conf || true
@@ -87,7 +87,7 @@ MAX_WAIT=600
 ELAPSED=0
 INTERVAL=15
 
-until nc -z -w5 192.168.70.132 38412 2>/dev/null; do
+until ping -c1 -W2 192.168.70.132 > /dev/null 2>&1; do
     if [ "$ELAPSED" -ge "$MAX_WAIT" ]; then
         echo "[gNB] ERROR: AMF not reachable after ${MAX_WAIT}s. Aborting."
         exit 1
