@@ -33,20 +33,20 @@ simlan.vlan_tagging = False
 cn = request.RawPC("cn")
 cn.hardware_type = params.hwtype
 cn.disk_image = IMAGE
-cn.addService(rspec.Execute(shell="bash", command="/local/repository/bin/setup-cn.sh >> /local/logs/setup-cn.log 2>&1"))
+cn.addService(rspec.Execute(shell="bash", command="sudo mkdir -p /local/logs && sudo bash /local/repository/bin/setup-cn.sh >> /local/logs/setup-cn.log 2>&1"))
 attach(simlan, cn, "if-cn", "10.10.0.10")
 
 gnb = request.RawPC("gnb")
 gnb.hardware_type = params.hwtype
 gnb.disk_image = IMAGE
-gnb.addService(rspec.Execute(shell="bash", command="/local/repository/bin/setup-gnb.sh >> /local/logs/setup-gnb.log 2>&1"))
+gnb.addService(rspec.Execute(shell="bash", command="sudo mkdir -p /local/logs && sudo bash /local/repository/bin/setup-gnb.sh >> /local/logs/setup-gnb.log 2>&1"))
 attach(simlan, gnb, "if-gnb", "10.10.0.20")
 
 for i in range(params.ue_count):
     ue = request.RawPC("ue" + str(i+1))
     ue.hardware_type = params.hwtype
     ue.disk_image = IMAGE
-    ue.addService(rspec.Execute(shell="bash", command="/local/repository/bin/setup-ue.sh " + str(i+1) + " >> /local/logs/setup-ue.log 2>&1"))
+    ue.addService(rspec.Execute(shell="bash", command="sudo mkdir -p /local/logs && sudo bash /local/repository/bin/setup-ue.sh " + str(i+1) + " >> /local/logs/setup-ue.log 2>&1"))
     attach(simlan, ue, "if-ue" + str(i+1), "10.10.0." + str(30+i))
 
 tour = IG.Tour()
