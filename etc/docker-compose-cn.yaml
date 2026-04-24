@@ -59,7 +59,7 @@ services:
       oai-public-net:
         ipv4_address: 192.168.70.130
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://192.168.70.130/nnrf-nfm/v1/nf-instances || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://192.168.70.130:8080/nnrf-nfm/v1/nf-instances || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 20
